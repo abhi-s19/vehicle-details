@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,9 +28,12 @@ public class VehicleDetails {
 	@Column(name = "model_year")
 	private int modelYear;
 	
+	@NotBlank(message = "* Manufacturer name is required")
 	@Column(name = "brand_name")
 	private String brandName;
 	
+	@NotBlank(message = "* Model name is required")
+	@Size(max = 15,min = 3,message = "* Model name should be between 3-15 characters")
 	@Column(name = "model_name")
 	private String modelName;
 	
