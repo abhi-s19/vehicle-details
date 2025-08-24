@@ -2,6 +2,9 @@ package com.abhisek.api.vehicle.details;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -92,6 +95,20 @@ class VehicleDetailsControllerTest {
 								+ "  \"sellerPhone\": \"111\"\r\n"
 								+ "}")).andExpect(MockMvcResultMatchers.status().isCreated());
 		
+	}
+	
+	@Test
+	void testGetAllVehicleDetailsController() throws Exception {
+		List<VehicleDetails> listOutput = Arrays.asList(
+				new VehicleDetails(1,2011,"tata","tata1","tata2","tata3",1.4,1,1.5,"kol","good","abhi","123456"),
+				new VehicleDetails(2,2012,"kia","kia1","kia2","kia3",1.4,1,1.5,"kol","good","abhi","123456")
+				);
+		Mockito.when(vehicleDetailsService.fetchAllVehicleDetails()).thenReturn(listOutput);
+		
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/vehicle-details").contentType(MediaType.APPLICATION_JSON))
+						.andExpect(MockMvcResultMatchers.status().isOk())
+						.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
+						.andExpect(MockMvcResultMatchers.jsonPath("$[0].brandName").value("tata"));
 	}
 
 }
