@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.abhisek.api.vehicle.details.entities.VehicleDetails;
 import com.abhisek.api.vehicle.details.errors.MandatoryFieldsMissingException;
+import com.abhisek.api.vehicle.details.errors.VehicleDetailsNotFoundException;
 import com.abhisek.api.vehicle.details.service.VehicleDetailsService;
 
 @RestController
@@ -26,10 +27,10 @@ public class VehicleDetailsController {
 	@Autowired
 	private VehicleDetailsService vehicleDetailsService;
 	
-	@GetMapping
-	public String hello() {
-		return "hello";
-	}
+//	@GetMapping
+//	public String hello() {
+//		return "hello";
+//	}
 	
 	@PostMapping
 	public ResponseEntity<VehicleDetails> saveVehicleDetails(@Valid@RequestBody VehicleDetails vehicleDetails, 
@@ -47,5 +48,10 @@ public class VehicleDetailsController {
 		
 		VehicleDetails dbVehicle = vehicleDetailsService.saveVehicleDetails(vehicleDetails);
 		return new ResponseEntity<VehicleDetails>(dbVehicle,HttpStatus.CREATED);
+	}
+	
+	@GetMapping
+	public List<VehicleDetails> getAllVehicleDetails() throws VehicleDetailsNotFoundException{
+		return vehicleDetailsService.fetchAllVehicleDetails();
 	}
 }

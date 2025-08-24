@@ -2,6 +2,9 @@ package com.abhisek.api.vehicle.details;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.abhisek.api.vehicle.details.dao.VehicleDetailsDAO;
 import com.abhisek.api.vehicle.details.entities.VehicleDetails;
+import com.abhisek.api.vehicle.details.errors.VehicleDetailsNotFoundException;
 import com.abhisek.api.vehicle.details.errors.VehicleNotSavedException;
 import com.abhisek.api.vehicle.details.service.VehicleDetailsService;
 
@@ -74,5 +78,22 @@ class VehicleDetailsServiceTest {
 		assertEquals(output.getBrandName(), vehicleDetails.getBrandName());
 		assertEquals(output.getSellerName(), vehicleDetails.getSellerName());
 	}
+	
+	@Test
+	void testFetchAllVehicleDetailsService() throws VehicleDetailsNotFoundException {
+		
+		List<VehicleDetails> output = Arrays.asList(
+				new VehicleDetails(1,2011,"tata","tata1","tata2","tata3",1.4,1,1.5,"kol","good","abhi","123456"),
+				new VehicleDetails(2,2012,"kia","kia1","kia2","kia3",1.4,1,1.5,"kol","good","abhi","123456")
+				);
+		
+		Mockito.when(vehicleDetailsDAO.findAll()).thenReturn(output);
+		
+		List<VehicleDetails> dbVehicle=vehicleDetailsService.fetchAllVehicleDetails();
+		
+		assertEquals(2,dbVehicle.size());
+		assertEquals("tata",dbVehicle.get(0).getBrandName());
+	}
+	
 
 }
